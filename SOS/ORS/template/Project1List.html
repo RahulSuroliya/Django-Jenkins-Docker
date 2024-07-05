@@ -1,0 +1,255 @@
+{% include './Header.html' %}
+{% load static %}
+<br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project List</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+    <script>
+        $(document).ready(function (){
+            txt = ""
+            $('#select_all').on("click",function(){
+
+                if(this.checked){
+                    $('.checkbox').each(function(){
+                        this.checked = true;
+                        txt = $(this).val();
+                    });
+                }else{
+                    $('.checkbox').each(function(){
+                        this.checked = false;
+                        txt = $(this).val();
+                    });
+                }
+            });
+            $('.checkbox').on('click', function(){
+                if ($('.checkbox:checked').length == $('.checkbox').length){
+                    $('#select_all').prop('checked', true);
+                    txt = $(this).val();
+                }else{
+                    $('#select_all').prop('checked', false)
+                    txt = $(this).val();
+                }
+            });
+            $('#ids').val(txt)
+        })
+        
+
+       
+    </script>
+    <script type="text/javascript">
+        $(function (){
+            setTimeout(function(){
+                $('#timeout').fadeOut(1000);
+            }, 2000)
+        })
+    </script>
+</head>
+<style>
+     body{
+        background-image: url("{% static '/nature1.jpg' %}");
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 100%;
+    }
+    .container{
+        background-image: url(../static/Aqua1.jpg);
+    }
+    .table tr td  {
+        border: 1px solid rgb(0, 0, 0);
+        text-align: center;
+    }
+    .table2 tr td  {
+        border: 1px solid orange;
+        background-color:orange;
+        /* border-radius: 5px; */
+        text-align: center;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 30px;
+        padding-right: 30px;
+        
+
+    }
+    
+    .input-name
+{
+    width: 90%;
+    position: relative;
+    margin: 20px auto;
+    text-align: center;
+}
+.name
+{
+    width: 100%;
+    padding: 8px 0 8px 40px;
+}
+.input-name span
+{
+    margin-left: 35px;
+}
+td{
+    background-color: lavender;
+}
+
+.role{
+    width: 100%;
+    padding: 8px 0 8px 40px;
+}
+</style>
+</head>
+<body>
+    <h1 align="center">Project List</h1>
+    <form method="POST">
+        <div class="container-fluid">
+            <div class="input-name">
+                <table class="table2">
+                    <tr class="r1">
+                        <td class="">
+                            <i class="fas fa-folder icon" style="position:absolute; font-size: 24px;border-right: 1px solid rgb(228, 153, 14); margin:8px 6px ; padding-right:4px"></i>
+
+                            <input class="name" name="name" value="{{form.name}}" placeholder="Enter Name">
+                            <span style="color:red;margin-left:5px">{{ form.inputError.name }}</span></td>
+                            <td class="c1">
+                            <i class="fa fa-list icon" style="position:absolute; font-size: 24px;border-right: 1px solid rgb(228, 153, 14); margin:8px 6px ; padding-right:4px"></i>
+                            
+                                <!-- <label for="category">category Name<span style="color: red;margin-left:2px">*</span></label> -->
+                            <select class="name" name="category">
+                            <option value="">Category Name</option>
+                            <!-- <option value="{{form.category}}">{{ form.category }}</option> -->
+                            {% for data in categoryList %}
+                            <option value="{{ data.category }}">{{ data.category }}</option>
+                            {% endfor %}
+                             </select>
+                             
+                            </td>
+                        <td class="">
+                            <i class="fas fa-calendar icon" style="position:absolute; font-size: 24px;border-right: 1px solid rgb(228, 153, 14); margin:8px 6px ; padding-right:4px"></i>
+
+                            <input class="name" name="openDate" value="{{form.openDate}}" type="date" id="datePicker" >
+                            <span style="color:red;margin-left:5px">{{ form.inputError.openDate }}</span>                   
+                            <script>
+                                document.getElementById('datePicker').addEventListener('keydown', function(event) {
+                                    event.preventDefault();
+                                });
+                            </script>
+                        </td>
+                        
+                        <td class="">
+                            <i class="fa fa-code-branch icon" style="position:absolute; font-size: 24px;border-right: 1px solid rgb(228, 153, 14); margin:8px 6px ; padding-right:4px"></i>
+
+                            <input class="name" type="number" step="0.000001" name="version" value="{{form.version}}" placeholder="Enter version No.">
+                            <span style="color:red;margin-left:5px">{{ form.inputError.version }}</span></td>
+                                
+                                
+                        <td class="c1">
+                            <span><button type="submit" class="btn btn-primary"  value="Search">Search
+                                <i class="fas fa-search"></i>
+                            </button></span>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+        <table border="1" width="50%">
+            <div id="timeout">
+                {% if form.error %}
+                <p style="color:red;font-size:x-large;text-align:center">{{ form.message }}</p>
+                {% else %}
+                <p style="color:rgb(35,151,41);font-size:x-large;text-align:center">{{ form.message }}</p>
+                {% endif %}
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-sm table-bordered table-hover table-responsive-sm">
+                        <thead class="thead-dark" style="text-align: center;">
+                            <th><input type="checkbox" id="select_all"
+                                onchange="selectAll(this)"> Select All
+
+                            </th>
+                            <th scope="row">S_NO.</th>
+                            <th scope="row">NAME</th>
+                            <th scope="row">CATAGORY</th>
+                            <th scope="row">OPEN DATE</th>
+                            <th scope="row">VERSION</th>
+                            <th scope="row">EDIT</th>
+
+                        </thead>
+                        <tbody>
+                            {% for e in pageList %}
+                            <tr>
+                                <td><input type="checkbox" name="ids" class="checkbox" onchange="selectone(this)" value="{{ e.id }}"></td>
+                                <td>{{ form.index|add:forloop.counter0 }}</td>
+                                <td>{{ e.name }}</td>
+                                <td>{{ e.category }}</td>
+                                <td>{{ e.openDate }}</td>
+                                <td>{{ e.version }}</td>
+                                <td><a href="/ORS/Project1/edit/{{ e.id }}">Edit
+                                    <i class="fas fa-edit"></i>
+                                </a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                    {% if form.mesg %}
+                    <b style="font-size:x-large; margin-left:660px">{{form.mesg}}</b><br>
+                    <a class="btn btn-primary" href="/ORS/Project1List" style="margin-left:720px">Back</a><br>
+                    {% else %}
+                    <div class="row">
+                        {% if form.pageNo == 1 %}
+                        <div class="col-lg-1">
+                            <input disabled type="submit" class="btn btn-dark float-left" name="operation" value="previous">
+                        </div>
+                        {% else %}
+                        <div class="col-lg-1">
+                            <input  type="submit" class="btn btn-primary" name="operation" value="previous">
+                        </div>
+                        {% endif %}
+                        <div class="col-lg-3"></div>
+                        <div class="col-lg-2">
+                            <input type="submit" class="btn btn-danger" name="operation" value="Delete">
+                        </div>
+                        <div class="col-md-2">
+                            <a href="/ORS/Project1">
+                                <font class="btn btn-success" data-target="#update" data-toggle="modal">ADD
+                                    <i class="fas fa-plus-circle"></i>
+                                </font>
+                            </a>
+                        </div>
+                        <div class="col-lg-3"></div>
+                        
+                        {% if pageList|length < 5 or form.LastId == form.MaxId %} 
+                        <div class="col-lg-1">
+                            <input disabled type="submit" class="btn btn-dark" name="operation" value="next">
+
+                        </div>
+                        {% else %}
+                        <div class="col-lg-1">
+                            <input type="submit" class="btn btn-primary" name="operation" value="next" >
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    
+
+                    </div>
+                </div>
+            </div>
+
+        </table>
+
+
+    </div>
+
+</form>
+
+</body>
+{% include './Footer.html' %}
+</html>

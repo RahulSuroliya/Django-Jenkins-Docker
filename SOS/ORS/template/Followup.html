@@ -1,0 +1,112 @@
+{% load static %}
+{% include './Header.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Followup Details</title>
+    <link rel="stylesheet" type="text/css" href="{% static '/registration.css' %}">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.0/js/solid.min.js" integrity="sha512-8lu2ZjeEHXD+qkS1UF5wsYQ08dg8yj6dqin/qFeDpeqMebKoLMj9zV92hdooBAYgG4DYhHv5miJ8f/t7NbPHsA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/solid.min.css" integrity="sha512-6/gTF62BJ06BajySRzTm7i8N2ZZ6StspU9uVWDdoBiuuNu5rs1a8VwiJ7skCz2BcvhpipLKfFerXkuzs+npeKA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <style>
+        body{
+            background: linear-gradient(120deg,#2980b9, #8e44ad);
+        }
+        a{
+            
+            place-items: center;
+            display: table-cell;
+            padding-top: 6px;
+          
+        }
+        .role{
+            text-align: center;
+        }
+        .text-name{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Followup Appointment </h2>
+        <div class="form-container">
+            <form method="POST">
+                {% if form.error %}
+                <p style="color:red;text-align:center;font-size:x-large;text-shadow:1px 0.6px rgb(255, 0, 0)"> {{ form.message }} </p>
+            {% else %}
+                <p style="color:rgb(65, 246, 65);text-align: center;text-shadow:1px 0.6px rgb(46, 243, 20)"> {{ form.message }} </p>
+            {% endif %}
+            <input type="hidden" name="id" value="{{ form.id }}">
+            <div class="input-name">
+                <label for="patient">Patient<span style="color: red;margin-left:2px">*</span></label><br>
+                <i class="fas fa-user icon" style="position:absolute; font-size: 24px;border-right: 1px solid rgb(228, 153, 14); margin:8px 6px ; padding-right:4px"></i>
+                <select class="role" name="patient">
+                    <!-- <option value="">Select a Model Type</option> -->
+                    <option value="{{form.patient}}">{{ form.patient }}</option>
+                    {% for data in patientList %}
+                    <option value="{{ data.patient }}">{{ data.patient }}</option>
+                       
+                    {% endfor %}
+                </select>
+                <span style="color:red;margin-left:5px">{{ form.inputError.patient }}</span>
+
+            </div>
+            
+            <div class="input-name">
+                <label for="doctor">Doctor<span style="color: red;margin-left:2px">*</span></label><br>
+                <i class="fas fa-user icon" style="position:absolute; font-size: 24px;border-right: 1px solid rgb(228, 153, 14); margin:8px 6px ; padding-right:4px"></i>
+                <select class="role" name="doctor">
+                    <!-- <option value="">Select a Model Type</option> -->
+                    <option value="{{form.doctor}}">{{ form.doctor }}</option>
+                    {% for data in doctorList %}
+                    <option value="{{ data.doctor }}">{{ data.doctor }}</option>
+                       
+                    {% endfor %}
+                </select>
+                <span style="color:red;margin-left:5px">{{ form.inputError.doctor }}</span>
+
+            </div>
+            
+            <div class="input-name">
+                <label for="visitDate">Visit Date<span style="color: red;margin-left:2px">*</span></label><br>
+
+                <i class="fas fa-calendar icon" style="position:absolute; font-size: 24px;border-right: 1px solid rgb(228, 153, 14); margin:8px 6px ; padding-right:4px"></i>
+                <input type="date" placeholder="Enter Visit Date " name="visitDate" value="{{form.visitDate}}" class="text-name">
+            </div>
+            <div class="input-name">
+                <span style="color: red;margin-left:5px">{{form.inputError.visitDate}}</span>
+            </div>
+            <div class="input-name">
+                <label for="fees">Fees<span style="color: red;margin-left:2px">*</span></label><br>
+
+                <i class="fa fa-chart-bar icon" style="position:absolute; font-size: 24px;border-right: 1px solid rgb(228, 153, 14); margin:8px 6px ; padding-right:4px"></i>
+                <input type="number" placeholder="Enter fees " name="fees" value="{{form.fees}}" class="text-name">
+            </div>
+            <div class="input-name">
+                <span style="color: red;margin-left:5px">{{form.inputError.fees}}</span>
+            </div>
+            
+            <div class="input-button">
+                <div class="row">
+               <input type="submit" class="button" value="save" style="margin-left:120px ;">
+               <!-- <span style="margin-right: 20px;">  <a href="" class="button-1" style="text-align:center">reset</a></span> -->
+               <a href="" class="button-1" style="text-align:center">reset</a>
+               </div>
+            </div>
+            </form>
+            
+
+           
+        </div>
+
+    </div>
+    
+</body>
+{% include './Footer.html' %}
+</html>
